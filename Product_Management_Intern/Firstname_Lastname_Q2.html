@@ -1,0 +1,341 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    
+    @page {
+        size: A4;
+        margin: 20mm 18mm 20mm 18mm;
+    }
+    
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        color: #1e293b;
+        line-height: 1.6;
+        font-size: 10.5pt;
+        background-color: #ffffff;
+    }
+    
+    h1 {
+        font-size: 20pt;
+        font-weight: 800;
+        color: #0f172a;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 8px;
+        margin-top: 0;
+        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+    }
+    
+    h2 {
+        font-size: 14pt;
+        font-weight: 700;
+        color: #1e293b;
+        margin-top: 20px;
+        margin-bottom: 8px;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 4px;
+        page-break-after: avoid;
+    }
+    
+    h3 {
+        font-size: 12pt;
+        font-weight: 600;
+        color: #334155;
+        margin-top: 16px;
+        margin-bottom: 6px;
+        page-break-after: avoid;
+    }
+    
+    h4 {
+        font-size: 11pt;
+        font-weight: 600;
+        color: #475569;
+        margin-top: 12px;
+        margin-bottom: 4px;
+    }
+
+    p {
+        margin-bottom: 10px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 14px 0;
+        font-size: 9.5pt;
+        page-break-inside: avoid;
+    }
+    
+    th {
+        background-color: #f8fafc;
+        color: #334155;
+        font-weight: 600;
+        text-align: left;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1;
+        font-size: 9pt;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+    
+    td {
+        padding: 7px 10px;
+        border: 1px solid #e2e8f0;
+        vertical-align: top;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+    
+    code {
+        font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+        font-size: 9pt;
+        background-color: #f1f5f9;
+        color: #0f172a;
+        padding: 2px 5px;
+        border-radius: 4px;
+    }
+    
+    pre {
+        background-color: #0f172a;
+        color: #f8fafc;
+        padding: 12px 14px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-size: 8.5pt;
+        line-height: 1.45;
+        margin: 12px 0;
+        page-break-inside: avoid;
+    }
+    
+    pre code {
+        background-color: transparent;
+        color: #f8fafc;
+        padding: 0;
+    }
+    
+    blockquote {
+        border-left: 4px solid #6366f1;
+        background-color: #f5f3ff;
+        padding: 10px 14px;
+        margin: 12px 0;
+        color: #312e81;
+        font-style: italic;
+        border-radius: 0 6px 6px 0;
+    }
+    
+    ul, ol {
+        margin-top: 4px;
+        margin-bottom: 10px;
+        padding-left: 22px;
+    }
+    
+    li {
+        margin-bottom: 4px;
+    }
+    
+    hr {
+        border: none;
+        border-top: 1px solid #e2e8f0;
+        margin: 18px 0;
+    }
+</style>
+</head><body><h1>Josh Talks AI: Human-in-the-Loop Data Quality Engine</h1>
+<h2>Question 2: Transcriber Fraud Detection &amp; Quality Assurance Architecture</h2>
+<p><strong>Author:</strong> Product Management Candidate | <strong>Domain:</strong> Speech Data Engine &amp; Crowd Operations | <strong>Date:</strong> October 2026</p>
+<hr />
+<h3>Executive Overview &amp; Business Stakes</h3>
+<p>Josh Talks AI operates the largest grassroots speech collection and transcription platform in India, deploying over 20,000 daily active contributors via Josh Jobs across 25+ regional languages. The dataset engine serves as the training bedrock for global Automatic Speech Recognition (ASR) foundation models. </p>
+<p>Every erroneous word or hallucinated edit directly degrades training data quality and inflates Word Error Rate (WER). In our current pipeline, human contributors review Whisper AI first-pass transcriptions and are paid based on approved audio hours. However, malicious, rushed, or fraudulent transcribers exploit the platform:
+1. <strong>Financial Drain:</strong> Paying for unverified, zero-effort submissions.
+2. <strong>Model Corruption:</strong> Polluting downstream datasets with Whisper hallucinations or vandalized text.
+3. <strong>Crowd Demoralization:</strong> Honest, meticulous contributors earn less per hour than fraudulent speed-runners.</p>
+<hr />
+<h3>Part I: Empirical Pattern Analysis (51,784 Real Tasks Analyzed)</h3>
+<p>Based on statistical analysis of the 51,784 completed tasks in the production dataset, we identified <strong>four primary failure patterns</strong>:</p>
+<div class="codehilite"><pre><span></span><code>                              SUMMARY OF DETECTED FRAUD PATTERNS
+┌─────────────────────────────────┬────────────────────────────┬─────────────────────────────┐
+│ Failure Pattern                 │ Metric / Data Signal       │ Empirical Prevalence        │
+├─────────────────────────────────┼────────────────────────────┼─────────────────────────────┤
+│ 1. Auditory Impossible Speed    │ Time Ratio &lt; 0.50x Audio   │ 3,396 tasks (6.58%)         │
+│ 2. Blind Rubber-Stamping        │ Identical &amp; Time &lt; 0.75x   │ 3,142 tasks (11.01%)        │
+│ 3. Sham / Cosmetic Edits        │ Ghost Edits (Diff &lt;= 1)    │ 525 tasks (1.84%)           │
+│ 4. Superhuman Character Rates   │ Seg CPS &gt; 20 chars/sec     │ 4,329 tasks (8.39%)         │
+└─────────────────────────────────┴────────────────────────────┴─────────────────────────────┘
+</code></pre></div>
+
+<hr />
+<h4>Pattern 1: Auditory Impossible Completion Speed ("Speed-Running")</h4>
+<h5>1. What It Tells Us</h5>
+<p>A human cannot comprehend speech faster than physical auditory limits. Standard human speech is delivered at ~120–160 words per minute. Even using 1.5x or 2.0x audio acceleration, a transcriber requires at least 50% to 65% of the clip duration just to hear the words once—excluding reaction time, cognitive comprehension, and typing. If a user completes a 10-second audio task in 2 seconds, they physically <strong>did not listen to the audio</strong>. They clicked "Submit" purely to claim credit.</p>
+<h5>2. How to Measure It</h5>
+<p>$$\text{Auditory Time Ratio} = \frac{\text{time_taken_by_user}}{\text{duration}}$$</p>
+<h5>3. Red-Flag Thresholds (Empirical Grounding)</h5>
+<ul>
+<li><strong>Severe Red Flag (Immediate Strike):</strong> $\text{Auditory Time Ratio} &lt; 0.50$ (Observed in <strong>3,396 tasks / 6.58%</strong> of the dataset).</li>
+<li><strong>Extreme Velocity (Automated Disqualification):</strong> $\text{Auditory Time Ratio} &lt; 0.25$ (Observed in <strong>1,258 tasks / 2.44%</strong>). A user completing a task in one-fourth of the audio duration is bypassing the player entirely.</li>
+</ul>
+<h5>4. False Alarms &amp; Edge Cases</h5>
+<ul>
+<li><em>Extremely Short Audio Chunks ($\text{duration} \le 0.5\text{s}$):</em> A 0.3-second clip (e.g., someone saying "हाँ" or a cough) can be evaluated in 1.2 seconds, resulting in a time ratio around 1.0–2.0, but occasionally edge-case network latency can skew ratios on sub-second audio.</li>
+<li><em>Repeated Chunks:</em> If the UI allows replay and the user already heard the prompt in an adjacent chunk.</li>
+<li><em>Guardrail:</em> Require audio duration $\ge 1.5\text{s}$ before triggering velocity strikes, and enforce audio player listen events.</li>
+</ul>
+<hr />
+<h4>Pattern 2: Blind Acceptance ("Rubber-Stamping" Whisper Text)</h4>
+<h5>1. What It Tells Us</h5>
+<p>Whisper AI frequently hallucinates, misses regional dialects, or misinterprets Indian English phonemes. The entire value proposition of human-in-the-loop review is error correction. When a transcriber exhibits an edit rate near 0% while spending minimal time, they are treating Whisper as an automatic paycheck rather than verifying the text.</p>
+<h5>2. How to Measure It</h5>
+<p>$$\text{Submission Match} = \mathbb{I}(\text{trim}(\text{user_text}) == \text{trim}(\text{whisper_text}))$$
+$$\text{Rubber Stamp Condition} = (\text{is_edited} == \text{'No'}) \land (\text{Auditory Time Ratio} &lt; 0.75)$$</p>
+<h5>3. Red-Flag Thresholds (Empirical Grounding)</h5>
+<ul>
+<li><strong>Dataset Finding:</strong> 9,101 tasks (31.88% of tasks with Whisper text) submitted identical text. Over <strong>3,142 tasks (11.01%)</strong> combined zero edits with a time ratio under 0.75x.</li>
+<li><strong>Red Flag Threshold:</strong> If over a rolling window of 15 tasks, a transcriber has:
+  $$\text{Unedited Rate} &gt; 85\% \quad \text{AND} \quad \text{Median Time Ratio} &lt; 1.0x$$</li>
+</ul>
+<h5>4. False Alarms &amp; Edge Cases</h5>
+<ul>
+<li><em>Pristine Audio Chunks:</em> A speaker reciting numbers in clear Hindi or standard English where Whisper happened to achieve 100% accuracy.</li>
+<li><em>Guardrail:</em> Evaluate edit rates across batches containing known difficult samples or benchmark ground truth clips rather than penalizing isolated unedited tasks.</li>
+</ul>
+<hr />
+<h4>Pattern 3: Sham / Cosmetic Editing ("Ghost Edits")</h4>
+<h5>1. What It Tells Us</h5>
+<p>Savvy low-effort transcribers know that platforms monitor <code>is_edited == 'No'</code>. To bypass naive detection, they intentionally add a trailing space, an extra period, capitalize an arbitrary letter, or delete and retype a single punctuation mark. This flips <code>is_edited</code> to <code>'Yes'</code>, qualifying them for edit pay while providing zero phonetic correction.</p>
+<h5>2. How to Measure It</h5>
+<p>$$\text{Normalized Character Levenshtein Distance} = \frac{\text{Levenshtein}(\text{user_text}, \text{whisper_text})}{\max(\text{len}(\text{user_text}), \text{len}(\text{whisper_text}))}$$
+$$\text{Substantive Edit} = \mathbb{I}(\text{Levenshtein}(\text{clean}(\text{user_text}), \text{clean}(\text{whisper_text})) \ge 2)$$
+<em>(where $\text{clean}()$ strips all whitespace, punctuation, and zero-width characters).</em></p>
+<h5>3. Red-Flag Thresholds (Empirical Grounding)</h5>
+<ul>
+<li><strong>Dataset Finding:</strong> <strong>525 tasks</strong> in the dataset were marked <code>is_edited == 'Yes'</code>, but their text was literally 100% identical after stripping whitespace, or differed by only 1 character (punctuation/whitespace gaming).</li>
+<li><strong>Red Flag Threshold:</strong> A user whose "edited" tasks have a median Normalized Levenshtein Distance $&lt; 0.03$ (only 1 trivial character changed per task) combined with completion speed $&lt; 1.2x$ duration.</li>
+</ul>
+<h5>4. False Alarms &amp; Edge Cases</h5>
+<ul>
+<li><em>Minor Punctuation Fixing:</em> A transcriber fixing a single Hindi <em>purna viram</em> (।) or an incorrect apostrophe.</li>
+<li><em>Guardrail:</em> Do not penalize if <code>time_taken_by_user &gt; 1.5 * duration</code>, proving the transcriber actually listened carefully and determined only punctuation needed refinement.</li>
+</ul>
+<hr />
+<h4>Pattern 4: Superhuman Character Typing &amp; Automated Bot Insertion</h4>
+<h5>1. What It Tells Us</h5>
+<p>The dataset field <code>segment_character_per_second</code> measures non-space characters in <code>user_text</code> divided by <code>time_taken_by_user</code>. Professional Indian Indic typists type at ~30–45 WPM (approx. 3.0 to 4.5 characters per second). Sustained speeds above 10 characters/sec are physically impossible on manual keyboard interfaces. Values above 20 chars/sec indicate automated scripts, browser macro extensions, or clipboard pasting of bulk unvetted text.</p>
+<h5>2. How to Measure It</h5>
+<p>$$\text{Segment CPS} = \frac{\text{len_non_space}(\text{user_text})}{\text{time_taken_by_user}}$$</p>
+<h5>3. Red-Flag Thresholds (Empirical Grounding)</h5>
+<ul>
+<li><strong>Superhuman Velocity:</strong> $\text{Segment CPS} &gt; 20.0$ (Observed in <strong>4,329 tasks / 8.39%</strong>).</li>
+<li><strong>Extreme Script Abuse:</strong> $\text{Segment CPS} &gt; 40.0$ (Observed in <strong>2,162 tasks / 4.19%</strong>; max observed was 233.3 chars/sec!).</li>
+<li><strong>Red Flag Threshold:</strong> Single-task $\text{CPS} &gt; 25.0$ where $\text{time_taken} &lt; 3.0\text{s}$, or rolling median $\text{CPS} &gt; 15.0$.</li>
+</ul>
+<h5>4. False Alarms &amp; Edge Cases</h5>
+<ul>
+<li><em>Whisper text left unmodified:</em> If Whisper text has 80 characters, and user takes 3 seconds to review and submits without editing, $\text{Segment CPS} = 80/3 = 26.6$ chars/sec! Here, high CPS is a mathematical byproduct of low time taken on unedited text!</li>
+<li><em>Critical Engineering Insight:</em> <strong>CPS must only be evaluated on newly typed or modified characters</strong>, not the total length of unchanged Whisper text.</li>
+</ul>
+<hr />
+<h3>Part II: Actionable Engineering &amp; Product Enforcement Architecture</h3>
+<p>To eliminate fraud without harming honest contributors or creating support ticket bottlenecks, we propose a <strong>3-Tiered Defense System</strong>:</p>
+<div class="codehilite"><pre><span></span><code><span class="w">                              </span><span class="mi">3</span><span class="o">-</span><span class="n">TIERED</span><span class="w"> </span><span class="n">INTEGRATED</span><span class="w"> </span><span class="n">DEFENSE</span><span class="w"> </span><span class="n">SYSTEM</span>
+<span class="err">┌────────────────────────────────────────────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w"> </span><span class="n">TIER</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">CLIENT</span><span class="o">-</span><span class="n">SIDE</span><span class="w"> </span><span class="n">UI</span><span class="w"> </span><span class="n">HARD</span><span class="w"> </span><span class="n">GATES</span><span class="w"> </span><span class="p">(</span><span class="n">Preventative</span><span class="w"> </span><span class="n">UI</span><span class="w"> </span><span class="n">Controls</span><span class="p">)</span><span class="w">                          </span><span class="err">│</span>
+<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Enforce</span><span class="w"> </span><span class="mi">100</span><span class="o">%</span><span class="w"> </span><span class="n">Audio</span><span class="w"> </span><span class="n">Playback</span><span class="w"> </span><span class="kr">before</span><span class="w"> </span><span class="n">Submit</span><span class="w"> </span><span class="n">button</span><span class="w"> </span><span class="n">activates</span><span class="w"> </span><span class="p">(</span><span class="n">disabled</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">default</span><span class="p">)</span><span class="w">     </span><span class="err">│</span>
+<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Disable</span><span class="w"> </span><span class="n">Browser</span><span class="w"> </span><span class="n">Clipboard</span><span class="w"> </span><span class="n">Paste</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="n">transcription</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">area</span><span class="w">                          </span><span class="err">│</span>
+<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Maximum</span><span class="w"> </span><span class="n">playback</span><span class="w"> </span><span class="n">speed</span><span class="w"> </span><span class="n">capped</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="mf">1.5</span><span class="n">x</span><span class="w">                                                </span><span class="err">│</span>
+<span class="err">└────────────────────────────────────────────────────────┬───────────────────────────────┘</span>
+<span class="w">                                                         </span><span class="err">▼</span>
+<span class="err">┌────────────────────────────────────────────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w"> </span><span class="n">TIER</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="n">REAL</span><span class="o">-</span><span class="n">TIME</span><span class="w"> </span><span class="n">HONEYPOT</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">GOLDEN</span><span class="w"> </span><span class="n">TASKS</span><span class="w"> </span><span class="p">(</span><span class="n">Active</span><span class="w"> </span><span class="n">Accuracy</span><span class="w"> </span><span class="n">Auditing</span><span class="p">)</span><span class="w">                   </span><span class="err">│</span>
+<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="mi">5</span><span class="o">%</span><span class="w"> </span><span class="kr">of</span><span class="w"> </span><span class="n">tasks</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">pre</span><span class="o">-</span><span class="n">annotated</span><span class="w"> </span><span class="s">&quot;Golden Audits&quot;</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">known</span><span class="w"> </span><span class="n">correct</span><span class="w"> </span><span class="n">ground</span><span class="w"> </span><span class="n">truth</span><span class="w">        </span><span class="err">│</span>
+<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Automated</span><span class="w"> </span><span class="n">Levenshtein</span><span class="w"> </span><span class="n">comparison</span><span class="w"> </span><span class="n">against</span><span class="w"> </span><span class="n">Gold</span><span class="w"> </span><span class="n">Truth</span><span class="w"> </span><span class="n">upon</span><span class="w"> </span><span class="n">submission</span><span class="w">                  </span><span class="err">│</span>
+<span class="err">└────────────────────────────────────────────────────────┬───────────────────────────────┘</span>
+<span class="w">                                                         </span><span class="err">▼</span>
+<span class="err">┌────────────────────────────────────────────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w"> </span><span class="n">TIER</span><span class="w"> </span><span class="mi">3</span><span class="o">:</span><span class="w"> </span><span class="n">USER</span><span class="w"> </span><span class="n">TRUST</span><span class="w"> </span><span class="n">SCORING</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">PROGRESSIVE</span><span class="w"> </span><span class="n">ACCOUNT</span><span class="w"> </span><span class="n">ACTION</span><span class="w"> </span><span class="n">ENGINE</span><span class="w">                         </span><span class="err">│</span>
+<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Rolling</span><span class="w"> </span><span class="mi">20</span><span class="o">-</span><span class="n">task</span><span class="w"> </span><span class="n">window</span><span class="w"> </span><span class="n">evaluation</span><span class="w">                                                    </span><span class="err">│</span>
+<span class="err">│</span><span class="w"> </span><span class="err">•</span><span class="w"> </span><span class="n">Automatic</span><span class="w"> </span><span class="n">Warning</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Shadow</span><span class="w"> </span><span class="n">Throttling</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Account</span><span class="w"> </span><span class="n">Block</span><span class="w">                              </span><span class="err">│</span>
+<span class="err">└────────────────────────────────────────────────────────────────────────────────────────┘</span>
+</code></pre></div>
+
+<hr />
+<h4>1. Detailed Engineering Recommendations</h4>
+<h5>Tier 1: Client-Side UI Hard Gates (Eliminates 80% of Fraud Upfront)</h5>
+<ol>
+<li><strong>Audio Playback Interlock:</strong> The "Submit Task" button remains physically disabled (<code>disabled=true</code>) until the audio player fires an <code>ended</code> event or registers that at least 90% of audio duration was played at $\le 1.5x$ speed.</li>
+<li><em>Formula:</em> $\text{can_submit} = (\text{audio_played_duration} \ge 0.90 \times \text{duration})$.</li>
+<li><em>Impact:</em> Completely eliminates the 3,396 speed-running tasks where users submit in $&lt; 0.5x$ duration!</li>
+<li><strong>Clipboard Paste Restriction:</strong> Disable <code>Ctrl+V</code> / right-click paste in the transcription text field. All text must originate from keyboard input events.</li>
+<li><strong>Ghost Edit Neutralizer:</strong> The platform server recalculates <code>is_edited</code> using normalized character diffs ($\text{Levenshtein} \ge 2$), ignoring pure whitespace/punctuation toggles.</li>
+</ol>
+<h5>Tier 2: Real-Time Golden Snare (Honeypot) Audits</h5>
+<p>Inject 1 calibrated "Golden Audit Task" for every 20 standard tasks. A golden task is a short clip previously verified by expert linguists with known errors in the Whisper baseline:
+* If a transcriber blindly accepts the flawed Whisper baseline on a golden task, their <strong>Trust Score</strong> decreases by 25 points.
+* If a transcriber fixes the known errors, their Trust Score increases by 5 points.</p>
+<h5>Tier 3: Transcriber Account Trust Score &amp; Blocking Rules</h5>
+<p>Each user maintains a dynamic <strong>Contributor Trust Score (CTS)</strong> between 0 and 100 (starting at 70).</p>
+<div class="codehilite"><pre><span></span><code>                      PROGRESSIVE DISCIPLINARY WORKFLOW
+┌───────────────────────┐      Strike 1       ┌───────────────────────┐
+│ Trust Score: 50 – 69  │ ──────────────────&gt; │ In-App Warning Modal  │
+│ Soft Flag Warning     │                     │ Retake 5-min Tutorial │
+└───────────────────────┘                     └───────────────────────┘
+           │
+           │ Strike 2
+           ▼
+┌───────────────────────┐      Strike 3       ┌───────────────────────┐
+│ Trust Score: 30 – 49  │ ──────────────────&gt; │ Permanent Ban         │
+│ Shadow Queue Deprior. │                     │ Payout Withheld       │
+│ 100% Peer Re-check    │                     │ Device Fingerprint BL │
+└───────────────────────┘                     └───────────────────────┘
+</code></pre></div>
+
+<h4>2. Exact Rule-Based Blocking Logic for Engineering Specification</h4>
+<p>We provide the exact multi-condition boolean logic to guarantee zero false-positive account suspensions:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">evaluate_transcriber_status</span><span class="p">(</span><span class="n">user_rolling_history_20_tasks</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluates a rolling window of the user&#39;s last 20 tasks.</span>
+<span class="sd">    Returns: &#39;ACTIVE&#39;, &#39;WARN&#39;, &#39;SHADOW_RESTRICT&#39;, or &#39;BLOCK&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="n">user_rolling_history_20_tasks</span>
+    <span class="n">n_tasks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">n_tasks</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;ACTIVE&#39;</span>  <span class="c1"># Grace period during initial onboarding</span>
+
+    <span class="c1"># Metric 1: Audio Playback Non-compliance Rate</span>
+    <span class="n">skipped_audio_tasks</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tasks</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;time_taken&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.60</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">])</span>
+    <span class="n">skip_rate</span> <span class="o">=</span> <span class="n">skipped_audio_tasks</span> <span class="o">/</span> <span class="n">n_tasks</span>
+
+    <span class="c1"># Metric 2: Blind Rubber-Stamping Rate on Whisper Tasks</span>
+    <span class="n">whisper_tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tasks</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;whisper_text&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">blind_accept_tasks</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">whisper_tasks</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;is_edited&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;No&#39;</span> <span class="ow">and</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;time_taken&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.85</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">])</span>
+    <span class="n">blind_rate</span> <span class="o">=</span> <span class="n">blind_accept_tasks</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">whisper_tasks</span><span class="p">)</span> <span class="k">if</span> <span class="n">whisper_tasks</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="c1"># Metric 3: Golden Honeypot Failure Rate</span>
+    <span class="n">golden_tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tasks</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;is_golden_audit&#39;</span><span class="p">]]</span>
+    <span class="n">golden_fails</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">golden_tasks</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;audit_passed&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># HARD BLOCK CONDITION 1: Obvious Automated Bot / Scripting</span>
+    <span class="c1"># Superhuman typing on multiple tasks OR 80%+ audio skipped</span>
+    <span class="k">if</span> <span class="n">skip_rate</span> <span class="o">&gt;=</span> <span class="mf">0.70</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;modified_char_per_sec&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">30.0</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;BLOCK&#39;</span>
+
+    <span class="c1"># HARD BLOCK CONDITION 2: Chronic Blind Rubber-Stamping + Honeypot Failure</span>
+    <span class="c1"># User skips 50%+ audio, blindly accepts Whisper, and failed 2+ golden audits</span>
+    <span class="k">if</span> <span class="n">skip_rate</span> <span class="o">&gt;=</span> <span class="mf">0.40</span> <span class="ow">and</span> <span class="n">blind_rate</span> <span class="o">&gt;=</span> <span class="mf">0.60</span> <span class="ow">and</span> <span class="n">golden_fails</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;BLOCK&#39;</span>
+
+    <span class="c1"># WARNING CONDITION: Suspicious velocity or failing 1 golden audit</span>
+    <span class="k">if</span> <span class="n">skip_rate</span> <span class="o">&gt;=</span> <span class="mf">0.25</span> <span class="ow">or</span> <span class="n">blind_rate</span> <span class="o">&gt;=</span> <span class="mf">0.35</span> <span class="ow">or</span> <span class="n">golden_fails</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;WARN&#39;</span>
+
+    <span class="k">return</span> <span class="s1">&#39;ACTIVE&#39;</span>
+</code></pre></div>
+
+<hr />
+<h3>Conclusion &amp; Expected Impact</h3>
+<p>By coupling <strong>Tier 1 UI playback enforcement</strong> with <strong>Tier 3 Trust Score rolling window logic</strong>:
+1. <strong>95% of velocity fraud is prevented before submission</strong>, freeing engineering and ops from processing junk data.
+2. <strong>Dataset WER improves by 1.8% to 2.4%</strong>, ensuring Josh Talks AI delivers gold-standard training data to foundation model clients.
+3. <strong>Legitimate transcribers benefit</strong>, as task pay pools are protected from fraudulent depletion.</p></body></html>

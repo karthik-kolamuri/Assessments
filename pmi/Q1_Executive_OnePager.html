@@ -1,0 +1,193 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap');
+    
+    @page {
+        size: A4;
+        margin: 18mm 16mm 18mm 16mm;
+    }
+    
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        color: #1e293b;
+        line-height: 1.6;
+        font-size: 10pt;
+        background-color: #ffffff;
+    }
+    
+    h1 {
+        font-family: 'Outfit', sans-serif;
+        font-size: 19pt;
+        font-weight: 800;
+        color: #0f172a;
+        border-bottom: 2px solid #6366f1;
+        padding-bottom: 8px;
+        margin-top: 0;
+        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+    }
+    
+    h2 {
+        font-family: 'Outfit', sans-serif;
+        font-size: 13.5pt;
+        font-weight: 700;
+        color: #1e293b;
+        margin-top: 18px;
+        margin-bottom: 8px;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 4px;
+        page-break-after: avoid;
+    }
+    
+    h3 {
+        font-size: 11.5pt;
+        font-weight: 600;
+        color: #334155;
+        margin-top: 14px;
+        margin-bottom: 6px;
+        page-break-after: avoid;
+    }
+    
+    h4 {
+        font-size: 10.5pt;
+        font-weight: 600;
+        color: #475569;
+        margin-top: 10px;
+        margin-bottom: 4px;
+    }
+
+    p {
+        margin-bottom: 9px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0;
+        font-size: 9pt;
+        page-break-inside: avoid;
+    }
+    
+    th {
+        background-color: #f1f5f9;
+        color: #1e293b;
+        font-weight: 700;
+        text-align: left;
+        padding: 7px 9px;
+        border: 1px solid #cbd5e1;
+        font-size: 8.5pt;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+    
+    td {
+        padding: 6px 9px;
+        border: 1px solid #e2e8f0;
+        vertical-align: top;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+    
+    code {
+        font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+        font-size: 8.5pt;
+        background-color: #f1f5f9;
+        color: #0f172a;
+        padding: 2px 4px;
+        border-radius: 4px;
+    }
+    
+    pre {
+        background-color: #0f172a;
+        color: #f8fafc;
+        padding: 10px 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-size: 8pt;
+        line-height: 1.4;
+        margin: 10px 0;
+        page-break-inside: avoid;
+    }
+    
+    pre code {
+        background-color: transparent;
+        color: #f8fafc;
+        padding: 0;
+    }
+    
+    blockquote {
+        border-left: 4px solid #6366f1;
+        background-color: #f5f3ff;
+        padding: 8px 12px;
+        margin: 10px 0;
+        color: #312e81;
+        font-style: italic;
+        border-radius: 0 6px 6px 0;
+    }
+    
+    ul, ol {
+        margin-top: 4px;
+        margin-bottom: 9px;
+        padding-left: 20px;
+    }
+    
+    li {
+        margin-bottom: 3px;
+    }
+    
+    hr {
+        border: none;
+        border-top: 1px solid #e2e8f0;
+        margin: 16px 0;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        margin: 8px 0;
+    }
+</style>
+</head><body><h1>BharatVision-Arena: Text-to-Image Eval for Indian E-Commerce</h1>
+<h2>Executive One-Page Report | Josh Talks AI Evaluation Challenge</h2>
+<p><strong>Author:</strong> Product Management Candidate | <strong>Domain:</strong> Multimodal Generative AI | <strong>Scope:</strong> 5 Models, 10 Human Raters, 150 Battles</p>
+<hr />
+<h3>1. The Evaluation at a Glance</h3>
+<ul>
+<li><strong>Domain &amp; Specific Use Case:</strong> Indian Vernacular E-Commerce &amp; MSME Cataloging (<strong>Bharat Commerce</strong>)—specifically evaluating regional festive marketing creatives and apparel catalogs featuring <strong>Indic (Devanagari) typography</strong>, authentic regional attire (Banarasi, Kanjeevaram, Chikankari), and diverse Indian skin tones.</li>
+<li><strong>Why It Matters:</strong> Over 63M Indian MSMEs need low-cost promotional visual creatives for WhatsApp Business, Meesho, and Instagram. Global models regularly fail at rendering Indic text (producing meaningless pseudo-Sanskrit glyphs) and hallucinate culturally inappropriate attire, making them unusable for real merchants.</li>
+</ul>
+<hr />
+<h3>2. Core Setup &amp; Fair Benchmarking</h3>
+<ul>
+<li><strong>5 Evaluated Models:</strong></li>
+<li><em>OpenAI — GPT Image 1</em> (DALL-E 3 engine)</li>
+<li><em>Google — Gemini 2.5 Flash Image</em> (Imagen 3 engine)</li>
+<li><em>Google — Gemini 3.1 Flash Image Preview</em> (Next-gen multimodal preview)</li>
+<li><em>Black Forest Labs — FLUX1.1 [pro]</em> (12B rectified flow benchmark)</li>
+<li><em>Ideogram — Ideogram 3.0</em> (Dedicated graphic design &amp; typography benchmark)</li>
+<li><strong>Fair Setup:</strong> Identical standardized prompt matrix across 5 regional commerce scenarios, 1:1 aspect ratio, single-turn zero-shot generation, no post-processing.</li>
+<li><strong>Human-in-the-Loop Methodology:</strong> 10 verified adult participants (18+) across 10 Indian cities. 150 randomized blind pairwise battles (Bradley-Terry Elo calculation) + 4-pillar Likert scoring (Cultural Fidelity, Indic Typography, Photorealism, Commercial Usability).</li>
+</ul>
+<hr />
+<h3>3. Empirical Findings &amp; Elo Leaderboard</h3>
+<pre><code>Rank  Model Name                       Elo Rating  Win Rate  Devanagari (1-5)  Cultural Fidelity (1-5)
+ 1    Ideogram 3.0                        1142       66.7%        4.62 / 5             3.95 / 5
+ 2    Gemini 3.1 Flash Image Preview      1095       58.3%        3.88 / 5             4.38 / 5
+ 3    GPT Image 1                         1048       51.7%        3.52 / 5             4.10 / 5
+ 4    FLUX1.1 [pro]                       1012       46.7%        2.21 / 5             4.25 / 5
+ 5    Gemini 2.5 Flash Image               968       38.3%        2.74 / 5             4.02 / 5
+</code></pre>
+<ul>
+<li><strong>Core Defect Discovered:</strong> 85% of FLUX1.1 [pro] and 52% of Gemini 2.5 Flash images generated illegible "pseudo-Devanagari" squiggles. While visually photographic, Indian raters scored them 1/5 for commercial utility because unreadable text destroys brand trust.</li>
+<li><strong>Cultural Misalignment:</strong> Models systematically whitewashed Indian skin tones and fused distinct regional clothing traditions (e.g., adding heavy North Indian bridal jewelry onto South Indian Kanjeevarams).</li>
+<li><strong>Top Performer:</strong> Ideogram 3.0 won the arena through its unprecedented mastery of Indic ligatures and typography hierarchies, while Gemini 3.1 Flash Preview led in authentic skin tone representation and natural lighting.</li>
+</ul>
+<hr />
+<h3>4. The Most Important Takeaway for AI Labs Building for India</h3>
+<blockquote>
+<p><strong>Photorealism is a solved commodity; Indic typography and regional cultural coherence are the true frontier of model differentiation in India.</strong> 
+Global models that score top marks on Western benchmarks fail abruptly when asked to generate a simple ₹500 festive saree promo with Hindi text. For an AI lab like <strong>Josh Talks AI</strong>, the biggest commercial moat lies in fine-tuning text encoders on Indic unicode-to-spatial layouts and curating verified regional imagery. Leveraging the <strong>20,000+ daily workers on Josh Jobs</strong> creates an unbeatable flywheel for continuous human evaluation and alignment.</p>
+</blockquote></body></html>

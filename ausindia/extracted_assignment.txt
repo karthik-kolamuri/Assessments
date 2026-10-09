@@ -1,0 +1,56 @@
+1: Bulk Certificate Generator
+2: Objective
+3: Build a backend API that accepts certificate generation requests for a list of recipients and generates certificates based on a predefined template.
+4: The system should handle the generation process efficiently and provide a way to track the status and retrieve the generated certificates.
+5: AI tools are allowed. You should be able to understand, explain, and modify the code you submit.
+6: Technology
+7: Python
+8: One of: FastAPI, Django + Django REST Framework, or Flask
+9: A relational database
+10: You may use any additional libraries or tools you consider appropriate.
+11: Problem Statement
+12: An organization wants to generate certificates for a large number of participants after an event or course.
+13: The client should be able to submit a list of recipients along with the certificate information.
+14: The backend should:
+15: Accept a certificate generation request.
+16: Validate the provided recipient data.
+17: Generate a certificate for each valid recipient using a predefined certificate template.
+18: Track the generation status.
+19: Allow the client to check the progress/result of the request.
+20: Allow generated certificates to be retrieved.
+21: The implementation should support bulk generation rather than requiring the client to make one API request per certificate.
+22: Certificate Generation
+23: Use a single predefined certificate template.
+24: You do not need to build a template editor or support multiple certificate designs.
+25: The generated certificate should contain the recipient-specific information provided in the request.
+26: The exact certificate format and generation library are up to you.
+27: Validation & Failure Handling
+28: The system should handle invalid recipient data appropriately.
+29: A failure while generating one certificate should not unnecessarily prevent other valid certificates in the same job from being generated.
+30: The job status should provide enough information to identify successful and failed generations.
+31: Bulk Processing
+32: The API should be designed around the fact that a single request may contain many recipients.
+33: You may choose how the generation is processed. For example, generation may be handled synchronously or through background processing.
+34: The choice and reasoning should be documented.
+35: Testing
+36: Include tests covering the important parts of the application. At minimum, test:
+37: Creating a generation job
+38: Input validation
+39: Certificate generation
+40: Job status/progress
+41: Handling an individual certificate failure
+42: Retrieving generated certificates
+43: Documentation
+44: Include a README explaining:
+45: How to set up the project
+46: How to run the application
+47: How to run tests
+48: How to submit a certificate generation request
+49: How to retrieve generated certificates
+50: Important implementation/design decisions
+51: Optional
+52: You may add small improvements if you believe they are useful, but they are not required.
+53: Optional features should not come at the cost of completing the required functionality.
+54: Important Note
+55: During the interview, you may be asked to explain your implementation, justify design decisions, debug or modify part of the application, or handle a changed requirement.
+56: You should therefore be comfortable explaining and modifying the code you submit.

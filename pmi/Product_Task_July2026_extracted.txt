@@ -1,0 +1,427 @@
+TOTAL PAGES: 9
+
+============================== PAGE 1 ==============================
+Product Task, July 2026 
+Question 1 
+About Josh Talks AI 
+At Josh Talks AI, we work on evaluations and human feedback systems for AI in Indian 
+contexts. 
+In simple words, this means we care about questions like: 
+•​
+Is an AI model actually useful for Indian users? 
+•​
+Does it work well for Indian needs, styles, and contexts? 
+•​
+Do people prefer one model over another? 
+•​
+Where does a model perform well, and where does it fail? 
+A lot of AI systems can look impressive in demos, but real quality becomes clear only when 
+they are tested properly. That is why evaluation is an important part of building better AI 
+products. 
+Why evaluation matters 
+AI models can generate outputs, but that alone is not enough. 
+For example, an image model may generate an image for a prompt, but we still need to ask: 
+•​
+Is the image relevant? 
+•​
+Is it visually strong? 
+•​
+Does it match the user’s intent? 
+•​
+Does it feel right for India? 
+•​
+Is it better than another model’s output? 
+Good evaluations help teams: 
+•​
+compare models 
+•​
+understand what users prefer 
+•​
+find quality issues 
+•​
+discover failure cases 
+•​
+improve products over time 
+A good evaluation is not only about scoring outputs. It is about creating a system that helps 
+teams make better decisions. 
+
+
+============================== PAGE 2 ==============================
+Why this hiring challenge exists 
+This challenge is designed to test how you think when the problem is not fully defined. 
+We are intentionally not giving you exact steps, fixed prompts, or a fixed scoring method. 
+We want to see whether you can: 
+•​
+identify a useful evaluation opportunity 
+•​
+define it clearly 
+•​
+run a small version of it 
+•​
+collect useful evidence 
+•​
+draw meaningful conclusions 
+Learn more about evals 
+Before designing your eval, please look at a few real-world examples to understand how 
+evaluation systems can work in practice: 
+•​
+Arena AI: https://arena.ai/ 
+•​
+Artificial Analysis: https://artificialanalysis.ai/ 
+•​
+Artificial Analysis Image Arena: https://artificialanalysis.ai/image/arena 
+•​
+Voice of India: https://voice-of-india.ai.joshtalks.com/ 
+•​
+Josh Talks’ Evaluation of Sarvam Bulbul v3 
+You do not need to copy these. They are only meant to help you understand how real-world 
+evals are structured. 
+The challenge 
+Design and run one useful text-to-image evaluation for India. 
+Models to evaluate and how to generate the images 
+Your evaluation must compare outputs from these 3 required image generation models: 
+•​
+OpenAI — GPT Image 1 — 
+https://developers.openai.com/api/docs/guides/image-generation 
+•​
+Google — Gemini 2.5 Flash Image — 
+https://ai.google.dev/gemini-api/docs/image-generation 
+•​
+Google — Gemini 3.1 Flash Image Preview — 
+https://ai.google.dev/gemini-api/docs/image-generation 
+You may add other image generation models if you want. If you do, please clearly mention 
+the company name and the exact model name. 
+Examples: 
+•​
+Ideogram — Ideogram 3.0 — https://ideogram.ai/features/3.0 
+
+
+============================== PAGE 3 ==============================
+•​
+Black Forest Labs — FLUX1.1 [pro] — https://docs.bfl.ai/flux_models/flux_1_1_pro 
+•​
+Recraft — Recraft V3 — https://www.recraft.ai/docs/recraft-models/recraft-V3 
+•​
+Adobe — Firefly Image 3 — 
+https://blog.adobe.com/en/publish/2024/04/23/adobe-advances-creative-ideation-
+with-new-firefly-image-3-model 
+For each model, generate images using the same prompt as far as possible, and keep the 
+setup fair across models. 
+For every image you submit, save: 
+•​
+the exact company name 
+•​
+the exact model name 
+•​
+the exact prompt 
+•​
+where you generated it 
+•​
+any important settings or variations used 
+•​
+screenshots or proof of generation 
+If one model requires a slightly different workflow, document that clearly in your 
+submission. 
+What kind of eval we are looking for 
+We are not looking for a broad benchmark. 
+We are looking for one focused and useful evaluation. 
+That means: 
+•​
+choose one specific category eg. e-commerce or education 
+•​
+choose one specific use case within that category 
+•​
+explain why the eval is useful for India 
+•​
+explain why an AI lab building for India would care about it 
+A strong submission should make it easy for us to understand: 
+•​
+what is being tested 
+•​
+why it matters 
+•​
+what “better” means 
+•​
+why this is worth evaluating 
+What you need to do 
+You should: 
+•​
+define the evaluation 
+•​
+compare outputs from at least 3 models 
+•​
+include human judgment 
+
+
+============================== PAGE 4 ==============================
+•​
+run the evaluation with 8–10 participants 
+•​
+show some early findings 
+•​
+explain how you would scale it further 
+•​
+also think about the UI / dashboard / leaderboard for this evaluation 
+You can decide the format, judging method, and structure yourself. 
+Participant requirements 
+Run the eval with 8–10 participants. 
+All participants must be: 
+•​
+18+ 
+•​
+willing to share: 
+–​
+name 
+–​
+email 
+–​
+age 
+–​
+consent 
+You may use this consent statement: 
+I confirm that I am 18 years or older. I voluntarily participated in this evaluation. I consent 
+to my name, email, and responses/ratings being included in this assignment submission for 
+hiring evaluation purposes. 
+Deliverables 
+Please submit all of the following: 
+1. Main document 
+This should explain: 
+•​
+what eval you chose 
+•​
+what category and use case you selected 
+•​
+why you chose it 
+•​
+why it is useful for India 
+•​
+why it matters for AI labs building for India 
+•​
+how the evaluation works 
+•​
+how participants judged the outputs 
+•​
+what results you found 
+•​
+how you would scale it further 
+2. One-page report 
+Please also submit a 1-page report that quickly summarizes: 
+
+
+============================== PAGE 5 ==============================
+•​
+the eval 
+•​
+the core setup 
+•​
+the main findings 
+•​
+the most important takeaway 
+This should be written in a way that a busy reviewer can understand quickly. 
+3. Supporting material 
+Please include relevant supporting evidence such as: 
+•​
+prompts 
+•​
+generated images 
+•​
+participant ratings 
+•​
+screenshots 
+•​
+notes 
+•​
+consent proof 
+4. UI / dashboard / leaderboard design 
+Please also include your thinking on how this eval could look as a product. 
+This can be simple. For example: 
+•​
+a basic rating UI 
+•​
+a dashboard for results 
+•​
+a leaderboard for model comparison 
+This does not need to be fully built. A mockup, prototype, Figma, slides, or simple design is 
+fine. 
+5. Video walkthrough 
+Please submit a compulsory video walkthrough of your work. 
+The video must: 
+•​
+be not more than 2 minutes 
+•​
+explain what eval you chose 
+•​
+explain what you found 
+•​
+explain why it matters 
+What we are evaluating 
+We care about: 
+•​
+judgment 
+•​
+originality 
+•​
+usefulness of the eval 
+
+
+============================== PAGE 6 ==============================
+•​
+India-specific thinking 
+•​
+clarity of reasoning 
+•​
+quality of execution 
+•​
+quality of insights 
+•​
+product thinking 
+We care much more about good thinking and strong choices than polished formatting. 
+Final reflection 
+Please end your submission with short answers to these questions: 
+1.​
+Why did you choose this eval? 
+2.​
+Why is it useful for India? 
+3.​
+Why would an AI lab building for India care about it? 
+4.​
+What did you learn from running the sample? 
+5.​
+What would you improve with more time? 
+Question 2 
+In Question 1, you evaluated AI model outputs using human judgment. Question 2 flips the 
+lens: instead of judging what the AI produces, you’ll evaluate the quality of human work 
+using data signals instead of human raters. It’s the same core skill (defining what “good” 
+means and measuring it), applied to a different target. 
+Apart from evaluations, Josh Talks AI also builds gold-standard AI datasets across 
+modalities  speech, image, and text  that help train and fine-tune advanced AI models such 
+as Automatic Speech Recognition (ASR) and Vision-Language (VL) systems. 
+We operate like a data research lab, creating high-quality, accurately labeled datasets that 
+improve the performance of global AI models. 
+Why ASR and High-Quality Datasets Matter 
+What is ASR (Automatic Speech Recognition)? 
+ASR models convert spoken language (audio) into written text  they are the backbone of 
+technologies like: 
+•​
+Voice assistants (e.g., Alexa, Siri, Google Assistant) 
+•​
+Meeting transcription tools 
+•​
+Customer-service bots and call analytics 
+•​
+Accessibility tools for captioning and dictation 
+•​
+Voice-based search and commands 
+These models depend on training data  pairs of audio and text that teach the AI what 
+words sound like across languages, accents, and tones. 
+
+
+============================== PAGE 7 ==============================
+Why Gold-Standard Datasets Matter 
+An ASR model’s quality is measured by its Word Error Rate (WER) the percentage of 
+words it gets wrong. Lower WER means higher accuracy. Because the model learns purely 
+from examples, every misheard or mislabeled word in the training data pushes WER up. So 
+models need large, clean, and accurate datasets where: 
+•​
+Audio is recorded in good quality. 
+•​
+Transcriptions match exactly what’s spoken. 
+•​
+Noise and irrelevant data are removed. 
+•​
+Annotations are reviewed multiple times for correctness. 
+Our goal at Josh Talks AI is to create datasets so clean that models trained on them achieve 
+WERs as low as possible (98–99% word-level accuracy). In short, data quality directly 
+determines model performance. 
+Background 
+As shared above, the newest and fastest-growing division of Josh Talks is working to create 
+datasets to train AI models. This data division is building India’s largest-scale, high-quality 
+multilingual voice and vision datasets to train and improve AI models. As you may have 
+seen, AI tools like ChatGPT and others are becoming a big part of our daily lives. Behind the 
+scenes, the quality of the data used to train these models plays a huge role in how well they 
+work — which is why high-quality training data has become more important than ever! 
+For example, our data engine collects millions of hours of Indian speech, covering 25+ 
+languages, diverse dialects, socio-economic backgrounds, emotional tones, and ambient 
+environments. All data is subjected to human-in-the-loop quality checks, ensuring 
+annotation error remains below 2% and delivering enterprise-grade accuracy. 
+These human review tasks are executed on our in-house platform, Josh Jobs, where we offer 
+freelance opportunities to individuals across India. 
+The two most common roles include: 
+•​
+Recording Tasks: Contributors submit voice recordings in their native languages, 
+helping us capture 10,000+ hours of audio daily across multiple languages. 
+•​
+Transcription & Quality Check Tasks: Contributors listen to short audio clips in 
+regional languages and transcribe them into accurate text. We currently have over 
+20,000 daily active users engaged in transcription. 
+This task is a sample problem statement from a transcription and quality check task. 
+Here’s how transcription works on our platform: 
+•​
+Audio Processing: We have audio chunks (collected from recording) that need 
+accurate text transcriptions. 
+•​
+AI First Pass: We use Whisper AI to create an initial transcription of each audio chunk. 
+
+
+============================== PAGE 8 ==============================
+•​
+Human Review: Transcribers log into our platform, listen to the audio, and see 
+Whisper’s text. 
+•​
+Quality Improvement: They edit Whisper’s transcription to fix any errors and create 
+the final, accurate version. 
+•​
+Payment: Transcribers get paid based on the number of accurate hours of audio they 
+complete. 
+The problem is that some transcribers are doing poor-quality work — either rushing 
+through tasks, making minimal effort, or not actually listening to the audio properly. This 
+hurts our final product quality and wastes money on bad work. 
+Your Task 
+Part I 
+Identify these low-quality transcribers using data patterns. You have access to data of some 
+users and their completed transcription tasks. Each row contains: 
+•​
+user_id: Which person did the work. 
+•​
+recording_url: The audio file they worked on. 
+•​
+whisper_text: AI’s transcription of the audio. 
+•​
+user_text: What the transcriber submitted as their final version. 
+•​
+is_edited: Yes if user_text is different from whisper_text (i.e., the user made edits). 
+•​
+duration: How long the audio clip was (in seconds). 
+•​
+time_taken_by_user: How long the transcriber spent on this task (in seconds) 
+(including listening to the audio) 
+•​
+segment_character_per_second: Non-space characters in user_text divided by 
+time_taken_by_user (in seconds). 
+ 
+1.​
+Analyze this data to identify at least 2 warning signs that someone might be doing 
+poor-quality work. 
+2.​
+For each pattern you identify, explain: 
+•​
+What it tells us: Why does this behavior suggest poor quality? 
+•​
+How to measure it: What would you calculate from the data to spot this pattern? 
+•​
+Red flag thresholds: At what point should we be concerned? 
+•​
+False alarms: When might good transcribers show this pattern innocently? 
+Part II 
+Based on your analysis in Part I, design a practical system to automatically spot problematic 
+transcribers on the platform itself, before they do too much damage. 
+Create clear, actionable recommendations that you could give to our engineering team. 
+Focus on transcription accuracy and transcriber experience, not the technical coding. Keep 
+in mind that the logic/metric you share will be used to block transcribers’ accounts, so 
+
+
+============================== PAGE 9 ==============================
+make sure you are 100% sure about the logic. Your recommendations should look 
+something like this: if a transcriber exhibits X, Y, and/or Z behavior, block the user. 
+
+

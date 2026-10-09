@@ -1,0 +1,19 @@
+{
+  "total_tasks": 51784,
+  "total_unique_users": 48876,
+  "edited_tasks_count": 43191,
+  "unedited_tasks_count": 8593,
+  "tasks_time_less_than_duration": 5998,
+  "tasks_time_less_than_half_duration": 3396,
+  "tasks_time_sub_1sec": 98,
+  "tasks_cps_above_25": 3711,
+  "tasks_cps_above_50": 1330,
+  "severe_truncation_count": 31,
+  "mean_duration": 5.477684568294614,
+  "median_duration": 4.0,
+  "mean_time_taken": 159.5843582737438,
+  "median_time_taken": 12.0,
+  "mean_cps": 12.001599783708626,
+  "p95_cps": 33.33,
+  "p99_cps": 58.33
+}

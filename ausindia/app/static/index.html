@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CertEngine • Enterprise Bulk Certificate Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #090d16;
+      --bg-surface: #101626;
+      --bg-surface-elevated: #162035;
+      --bg-surface-hover: #1c2a46;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.3);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-glow: rgba(99, 102, 241, 0.3);
+      --accent-gold: #f59e0b;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-cyan: #06b6d4;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, .brand-font { font-family: 'Outfit', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    /* Header */
+    header {
+      background: rgba(16, 22, 38, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #f59e0b, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .header-link-btn {
+      background: var(--bg-surface-elevated);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-link-btn:hover {
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Main Layout */
+    main {
+      flex: 1;
+      padding: 40px 0 60px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    /* Studio Grid */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .studio-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+
+    .card-header {
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      padding: 12px 14px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    textarea.form-control {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 14px var(--primary-glow);
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface-elevated);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-secondary:hover {
+      color: #fff;
+      border-color: var(--text-muted);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    }
+
+    /* Live Progress Card */
+    .progress-box {
+      margin-bottom: 24px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6366f1, #06b6d4, #10b981);
+      border-radius: 6px;
+      transition: width 0.4s ease;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .metric-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      text-align: center;
+    }
+
+    .metric-val {
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .metric-lbl {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    /* Certificates Table */
+    .table-wrap {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-top: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--bg-surface-elevated);
+      color: var(--text-dim);
+      padding: 10px 14px;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    tr:hover td {
+      background: var(--bg-surface-hover);
+    }
+
+    .badge-status {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-pending { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); }
+    .badge-processing { background: rgba(99, 102, 241, 0.15); color: var(--primary-light); }
+    .badge-completed { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
+    .badge-partial { background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); }
+    .badge-failed { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); }
+
+    /* Verification Box */
+    .verify-box {
+      margin-top: 40px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+
+    .verify-result {
+      display: none;
+      margin-top: 20px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--accent-emerald);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 24px 0;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+      background: var(--bg-surface);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="brand">
+        <div class="brand-logo">CG</div>
+        <div>
+          <div class="brand-title">CertEngine <span class="brand-badge">FastAPI v1.0</span></div>
+        </div>
+      </a>
+      <div class="header-links">
+        <a href="/docs" target="_blank" class="header-link-btn">⚡ OpenAPI / Swagger Docs</a>
+        <a href="#verifier-section" class="header-link-btn">🔍 Public Verifier</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-tag">🚀 Asynchronous Bulk Certificate Generation Pipeline</div>
+        <h1 class="hero-title">Generate Thousands of Verified Certificates in Seconds</h1>
+        <p class="hero-desc">
+          High-performance, fault-tolerant backend system with background worker queues, dynamic QR verification codes, isolated error handling, and on-the-fly zip packaging.
+        </p>
+      </div>
+
+      <!-- Studio Grid -->
+      <div class="studio-grid">
+        
+        <!-- Left Column: Generator Configuration -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">📝 Job Submission Studio</h2>
+            <button class="btn btn-secondary" onclick="loadSampleRecipients()" style="font-size: 12px; padding: 6px 12px;">
+              ✨ Load Demo Participants
+            </button>
+          </div>
+
+          <form id="jobForm" onsubmit="handleFormSubmit(event)">
+            <div class="form-group">
+              <label class="form-label">Course / Event Name</label>
+              <input type="text" id="eventName" class="form-control" value="Advanced Full Stack AI Engineering Bootcamp" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Issuer Organization</label>
+              <input type="text" id="issuerName" class="form-control" value="AusIndia Education Initiative" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Issue Date</label>
+              <input type="text" id="issueDate" class="form-control" value="October 09, 2026">
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <label class="form-label" style="margin-bottom: 0;">Recipients (JSON Array)</label>
+                <span id="recipientCountBadge" style="font-size: 11px; color: var(--accent-cyan);">0 Recipients</span>
+              </div>
+              <textarea id="recipientsJson" class="form-control" rows="10" placeholder='[{"name": "Alice Smith", "email": "alice@example.com"}]' required oninput="updateRecipientCount()"></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-primary">
+              🚀 Launch Bulk Generation Job
+            </button>
+          </form>
+        </div>
+
+        <!-- Right Column: Live Monitor & Results -->
+        <div class="card" id="monitorCard">
+          <div class="card-header">
+            <h2 class="card-title">📊 Live Generation Monitor</h2>
+            <span id="jobStatusBadge" class="badge-status badge-pending">IDLE</span>
+          </div>
+
+          <div id="idleState" style="text-align: center; padding: 48px 16px; color: var(--text-dim);">
+            <div style="font-size: 40px; margin-bottom: 12px;">⚡</div>
+            <h3 style="font-size: 16px; color: var(--text-muted); margin-bottom: 6px;">No Active Generation Job</h3>
+            <p style="font-size: 13px;">Submit a job on the left or load demo participants to watch the live progress engine in action.</p>
+          </div>
+
+          <div id="activeState" style="display: none;">
+            <div class="progress-box">
+              <div class="progress-top">
+                <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);" id="jobIdLabel">Job ID: ...</span>
+                <span style="font-size: 15px; font-weight: 700; color: var(--accent-emerald);" id="progressText">0%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div id="progressBar" class="progress-bar-fill"></div>
+              </div>
+
+              <div class="metrics-row">
+                <div class="metric-card">
+                  <div class="metric-val" id="metricTotal">0</div>
+                  <div class="metric-lbl">Total</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-val" id="metricProcessed">0</div>
+                  <div class="metric-lbl">Processed</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-val" style="color: var(--accent-emerald);" id="metricSuccess">0</div>
+                  <div class="metric-lbl">Success</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-val" style="color: var(--accent-rose);" id="metricFailed">0</div>
+                  <div class="metric-lbl">Failed</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+              <a id="downloadAllBtn" href="#" class="btn btn-gold" style="display: none; flex: 1;">
+                📦 Download All as ZIP Archive
+              </a>
+            </div>
+
+            <!-- Failures Warning Box (if any) -->
+            <div id="failureBox" style="display: none; background: rgba(244, 63, 94, 0.1); border: 1px solid var(--accent-rose); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 16px; font-size: 12px;">
+              <strong style="color: var(--accent-rose);">⚠️ Handled Failures (Fault Isolation):</strong>
+              <ul id="failureList" style="margin-top: 6px; padding-left: 20px; color: #fca5a5;"></ul>
+            </div>
+
+            <!-- Generated Certificates Table -->
+            <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Generated Certificates</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Recipient</th>
+                    <th>Certificate Code</th>
+                    <th style="text-align: right;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="certTableBody">
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Public Verifier Section -->
+      <div class="verify-box" id="verifier-section">
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 6px;">🔍 Instant Tamper-Proof Certificate Verifier</h2>
+        <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 20px;">
+          Anyone can enter an official Certificate Code or scan the QR code to verify the cryptographic authenticity.
+        </p>
+
+        <div style="display: flex; gap: 12px; max-width: 600px;">
+          <input type="text" id="verifyInput" class="form-control" placeholder="e.g. CERT-2026-A8F29D" style="text-transform: uppercase;">
+          <button class="btn btn-primary" onclick="verifyCertificateAction()" style="width: auto; white-space: nowrap;">
+            Verify Certificate
+          </button>
+        </div>
+
+        <div id="verifyResultCard" class="verify-result">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700;">✓</div>
+            <div>
+              <h3 style="font-size: 18px; color: var(--accent-emerald);" id="verifyTitle">Valid & Authenticated Certificate</h3>
+              <div style="font-size: 12px; color: var(--text-dim);" id="verifyCodeBadge">ID: CERT-2026-XXXX</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-size: 13px;">
+            <div><strong>Recipient:</strong> <span id="vRecipient">-</span></div>
+            <div><strong>Event / Course:</strong> <span id="vEvent">-</span></div>
+            <div><strong>Issuer:</strong> <span id="vIssuer">-</span></div>
+            <div><strong>Issue Date:</strong> <span id="vDate">-</span></div>
+            <div style="grid-column: span 2; word-break: break-all; font-family: monospace; font-size: 11px; color: var(--text-dim);">
+              <strong>Verification SHA256 Hash:</strong> <span id="vHash">-</span>
+            </div>
+          </div>
+          <div style="margin-top: 14px;">
+            <a id="vDownloadLink" href="#" class="btn btn-secondary" style="font-size: 12px; padding: 6px 14px;">
+              📥 Download Verified PDF
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>CertEngine • Bulk Certificate Generator Backend Solution • Designed for AusIndia</p>
+      <p style="margin-top: 4px; font-size: 11px; color: var(--text-dim);">Built with Python, FastAPI, ReportLab, SQLAlchemy, and SQLite</p>
+    </div>
+  </footer>
+
+  <script>
+    let activePollingInterval = null;
+
+    function loadSampleRecipients() {
+      const demoList = [
+        {"name": "Aarav Sharma", "email": "aarav.sharma@example.com"},
+        {"name": "Priya Venkataraman", "email": "priya.venkat@example.com"},
+        {"name": "Rohit Kulkarni", "email": "rohit.kulkarni@example.com"},
+        {"name": "Ananya Sen", "email": "ananya.sen@example.com"},
+        {"name": "Mohammed Farooq", "email": "farooq.m@example.com"},
+        {"name": "Divya Patel", "email": "divya.patel@example.com"},
+        {"name": "Vikram Meena", "email": "vikram.meena@example.com"},
+        {"name": "Sneha Iyer", "email": "sneha.iyer@example.com"},
+        {"name": "Abhishek Mishra", "email": "abhishek.m@example.com"},
+        {"name": "Tanvi Deshmukh", "email": "tanvi.d@example.com"},
+        {"name": "Fault Test User", "email": "invalid-email-format-to-test-isolation"} // Demonstrates fault isolation!
+      ];
+      document.getElementById('recipientsJson').value = JSON.stringify(demoList, null, 2);
+      updateRecipientCount();
+    }
+
+    function updateRecipientCount() {
+      try {
+        const parsed = JSON.parse(document.getElementById('recipientsJson').value);
+        if (Array.isArray(parsed)) {
+          document.getElementById('recipientCountBadge').textContent = `${parsed.length} Recipients`;
+          return;
+        }
+      } catch (e) {}
+      document.getElementById('recipientCountBadge').textContent = "Invalid JSON";
+    }
+
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = "⏳ Submitting Job...";
+
+      let recipients;
+      try {
+        recipients = JSON.parse(document.getElementById('recipientsJson').value);
+        if (!Array.isArray(recipients) || recipients.length === 0) {
+          alert("Recipients must be a non-empty JSON array.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "🚀 Launch Bulk Generation Job";
+          return;
+        }
+      } catch (err) {
+        alert("Invalid JSON in recipients field: " + err.message);
+        submitBtn.disabled = false;
+        submitBtn.textContent = "🚀 Launch Bulk Generation Job";
+        return;
+      }
+
+      const payload = {
+        event_name: document.getElementById('eventName').value,
+        issuer_name: document.getElementById('issuerName').value,
+        issue_date: document.getElementById('issueDate').value,
+        recipients: recipients
+      };
+
+      try {
+        const response = await fetch('/api/v1/jobs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          alert("Error creating job: " + (errorData.detail || response.statusText));
+          submitBtn.disabled = false;
+          submitBtn.textContent = "🚀 Launch Bulk Generation Job";
+          return;
+        }
+
+        const data = await response.json();
+        submitBtn.disabled = false;
+        submitBtn.textContent = "🚀 Launch Bulk Generation Job";
+
+        // Switch to live monitor
+        startLiveMonitoring(data.job_id);
+
+      } catch (err) {
+        alert("Network error: " + err.message);
+        submitBtn.disabled = false;
+        submitBtn.textContent = "🚀 Launch Bulk Generation Job";
+      }
+    }
+
+    function startLiveMonitoring(jobId) {
+      if (activePollingInterval) clearInterval(activePollingInterval);
+
+      document.getElementById('idleState').style.display = 'none';
+      document.getElementById('activeState').style.display = 'block';
+      document.getElementById('jobIdLabel').textContent = `Job ID: ${jobId.substring(0, 8)}...`;
+
+      pollJobStatus(jobId);
+      activePollingInterval = setInterval(() => pollJobStatus(jobId), 700);
+    }
+
+    async function pollJobStatus(jobId) {
+      try {
+        const res = await fetch(`/api/v1/jobs/${jobId}`);
+        if (!res.ok) return;
+
+        const job = await res.json();
+
+        // Update progress bar & status badge
+        const badge = document.getElementById('jobStatusBadge');
+        badge.textContent = job.status;
+        badge.className = `badge-status badge-${job.status.toLowerCase().replace('_', '')}`;
+
+        const pct = job.progress_percentage || 0;
+        document.getElementById('progressBar').style.width = `${pct}%`;
+        document.getElementById('progressText').textContent = `${pct}%`;
+
+        // Metrics
+        document.getElementById('metricTotal').textContent = job.total_count;
+        document.getElementById('metricProcessed').textContent = job.processed_count;
+        document.getElementById('metricSuccess').textContent = job.success_count;
+        document.getElementById('metricFailed').textContent = job.failure_count;
+
+        // Failures
+        const failureBox = document.getElementById('failureBox');
+        const failureList = document.getElementById('failureList');
+        if (job.failures && job.failures.length > 0) {
+          failureBox.style.display = 'block';
+          failureList.innerHTML = job.failures.map(f => `<li><strong>${f.recipient_name}:</strong> ${f.error_reason}</li>`).join('');
+        } else {
+          failureBox.style.display = 'none';
+        }
+
+        // Download All button
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
+        if (job.download_all_url && job.success_count > 0) {
+          downloadAllBtn.style.display = 'flex';
+          downloadAllBtn.href = job.download_all_url;
+        }
+
+        // Certificates table
+        const tbody = document.getElementById('certTableBody');
+        tbody.innerHTML = job.certificates.map(c => `
+          <tr>
+            <td>
+              <strong>${c.recipient_name}</strong><br>
+              <span style="font-size: 11px; color: var(--text-dim);">${c.recipient_email}</span>
+            </td>
+            <td>
+              <code>${c.certificate_code}</code>
+            </td>
+            <td style="text-align: right;">
+              <a href="${c.download_url}" class="btn btn-secondary" style="font-size: 11px; padding: 4px 10px;">
+                📥 PDF
+              </a>
+            </td>
+          </tr>
+        `).join('');
+
+        // Stop polling if complete
+        if (['COMPLETED', 'PARTIALLY_COMPLETED', 'FAILED'].includes(job.status)) {
+          clearInterval(activePollingInterval);
+        }
+
+      } catch (e) {
+        console.error("Polling error:", e);
+      }
+    }
+
+    async function verifyCertificateAction() {
+      const code = document.getElementById('verifyInput').value.trim();
+      if (!code) {
+        alert("Please enter a Certificate Code.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/v1/certificates/verify/${encodeURIComponent(code)}`);
+        const card = document.getElementById('verifyResultCard');
+        if (!res.ok) {
+          const err = await res.json();
+          alert("Verification Failed: " + (err.detail || "Invalid certificate."));
+          card.style.display = 'none';
+          return;
+        }
+
+        const data = await res.json();
+        card.style.display = 'block';
+        document.getElementById('verifyCodeBadge').textContent = `ID: ${data.certificate_code}`;
+        document.getElementById('vRecipient').textContent = data.recipient_name;
+        document.getElementById('vEvent').textContent = data.event_name;
+        document.getElementById('vIssuer').textContent = data.issuer_name;
+        document.getElementById('vDate').textContent = data.issue_date;
+        document.getElementById('vHash').textContent = data.verification_hash;
+        document.getElementById('vDownloadLink').href = data.download_url;
+
+      } catch (err) {
+        alert("Verification error: " + err.message);
+      }
+    }
+
+    // Auto load demo on start
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSampleRecipients();
+    });
+  </script>
+</body>
+</html>

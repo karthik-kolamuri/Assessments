@@ -1,0 +1,205 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    
+    @page {
+        size: A4;
+        margin: 20mm 18mm 20mm 18mm;
+    }
+    
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        color: #1e293b;
+        line-height: 1.6;
+        font-size: 10.5pt;
+        background-color: #ffffff;
+    }
+    
+    h1 {
+        font-size: 20pt;
+        font-weight: 800;
+        color: #0f172a;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 8px;
+        margin-top: 0;
+        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+    }
+    
+    h2 {
+        font-size: 14pt;
+        font-weight: 700;
+        color: #1e293b;
+        margin-top: 20px;
+        margin-bottom: 8px;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 4px;
+        page-break-after: avoid;
+    }
+    
+    h3 {
+        font-size: 12pt;
+        font-weight: 600;
+        color: #334155;
+        margin-top: 16px;
+        margin-bottom: 6px;
+        page-break-after: avoid;
+    }
+    
+    h4 {
+        font-size: 11pt;
+        font-weight: 600;
+        color: #475569;
+        margin-top: 12px;
+        margin-bottom: 4px;
+    }
+
+    p {
+        margin-bottom: 10px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 14px 0;
+        font-size: 9.5pt;
+        page-break-inside: avoid;
+    }
+    
+    th {
+        background-color: #f8fafc;
+        color: #334155;
+        font-weight: 600;
+        text-align: left;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1;
+        font-size: 9pt;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+    
+    td {
+        padding: 7px 10px;
+        border: 1px solid #e2e8f0;
+        vertical-align: top;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+    
+    code {
+        font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+        font-size: 9pt;
+        background-color: #f1f5f9;
+        color: #0f172a;
+        padding: 2px 5px;
+        border-radius: 4px;
+    }
+    
+    pre {
+        background-color: #0f172a;
+        color: #f8fafc;
+        padding: 12px 14px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-size: 8.5pt;
+        line-height: 1.45;
+        margin: 12px 0;
+        page-break-inside: avoid;
+    }
+    
+    pre code {
+        background-color: transparent;
+        color: #f8fafc;
+        padding: 0;
+    }
+    
+    blockquote {
+        border-left: 4px solid #6366f1;
+        background-color: #f5f3ff;
+        padding: 10px 14px;
+        margin: 12px 0;
+        color: #312e81;
+        font-style: italic;
+        border-radius: 0 6px 6px 0;
+    }
+    
+    ul, ol {
+        margin-top: 4px;
+        margin-bottom: 10px;
+        padding-left: 22px;
+    }
+    
+    li {
+        margin-bottom: 4px;
+    }
+    
+    hr {
+        border: none;
+        border-top: 1px solid #e2e8f0;
+        margin: 18px 0;
+    }
+</style>
+</head><body><h1>Voice Arena Leaderboard: Executive One-Pager</h1>
+<h2>Product Overview &amp; Evaluation Framework for Speaker Diarization</h2>
+<p><strong>Target Reviewer:</strong> Executive Team &amp; Engineering Leadership | <strong>Read Time:</strong> 2 Minutes</p>
+<hr />
+<h3>The Problem &amp; Market Need</h3>
+<p>Speaker diarization ("who spoke when") is essential for meeting intelligence, contact centers, and clinical scribes. Yet published vendor accuracy numbers are systematically misleading: they rely on sterile academic datasets, forgive boundary errors with generous 250ms collars, and ignore cross-talk overlap. Product teams select systems based on marketing claims only to encounter severe conversational turn scrambling in production.</p>
+<p><strong>Voice Arena’s Mission:</strong> Provide the definitive, unbiased, production-grounded benchmark for speech diarization systems.</p>
+<hr />
+<h3>Core Leaderboard Architecture</h3>
+<div class="codehilite"><pre><span></span><code>┌─────────────────────────────────────────────────────────────────────────────┐
+│                       VOICE ARENA EVALUATION ENGINE                         │
+├──────────────────────┬───────────────────────────────┬──────────────────────┤
+│    TEST DATASET      │      EVALUATED SYSTEMS        │   SCORING &amp; RIGOR    │
+│  120 Hours Curated   │      10 Flagship Models       │ Dual-Collar Scoring  │
+│  • Meetings (40h)    │ • Open-Source: pyannote 3.1,  │ • Primary: 0ms       │
+│  • Telephony (30h)   │   NeMo MSDD, WhisperX,        │ • Legacy: 250ms      │
+│  • Clinical (20h)    │   SpeechBrain                 │ Overlap: Mandatory   │
+│  • Social/Casual(15h)│ • Commercial Cloud APIs:      │ Speakers: Unknown    │
+│  • Noisy Fields (15h)│   Deepgram, AssemblyAI, AWS,  │ Bootstrap 95% CIs    │
+│  Triple-pass audit   │   Google Chirp, Azure, Rev AI │ Wilcoxon (p &lt; 0.01)  │
+└──────────────────────┴───────────────────────────────┴──────────────────────┘
+</code></pre></div>
+
+<hr />
+<h3>The 4 Crucial Design Choices</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Design Choice</th>
+<th style="text-align: left;">Rationale &amp; Trade-off</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>1. Strict 0ms Boundary Collar</strong></td>
+<td style="text-align: left;">Traditional 250ms collars erase half a second of error per speaker turn, hiding speech collisions. 0ms reflects true production turn-taking.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2. Mandatory Overlap Evaluation</strong></td>
+<td style="text-align: left;">12% of real conversation is cross-talk, driving 60%+ of downstream errors. We score overlap without forgiveness and report dedicated Overlap-DER.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3. JER Alongside DER</strong></td>
+<td style="text-align: left;">Diarization Error Rate is time-weighted and hides failures on quiet participants. Jaccard Error Rate treats all speakers equally, preventing conversational bias.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4. Paired Statistical Significance</strong></td>
+<td style="text-align: left;">Benchmark scores often differ by fractions of a percent. We enforce 1,000 bootstrap resamples and Wilcoxon significance flags before declaring a winner.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>Leaderboard Output: What Decision-Makers See</h3>
+<p>Next to each ranked model, the leaderboard publishes:
+1. <strong>DER (0ms &amp; 250ms)</strong> with $\pm 95\%$ confidence bounds.
+2. <strong>Overlap Diarization Error Rate (OV-DER)</strong> to gauge multi-speaker robustness.
+3. <strong>Operational Metrics:</strong> Real-Time Factor (RTF), Streaming Latency, and Cost per 1,000 audio hours.
+4. <strong>Domain Breakdown Radar:</strong> Instant filtering by Enterprise Meetings, Telephony, or Medical.</p>
+<h3>Key Takeaway for Voice AI Teams</h3>
+<blockquote>
+<p><strong>A model with an 8% DER on clean benchmark audio can collapse to 35% DER in real multi-speaker meetings.</strong> Voice Arena eliminates blind vendor selection by pairing realistic acoustic stress-tests with statistical confidence intervals and cost-latency profiling.</p>
+</blockquote></body></html>

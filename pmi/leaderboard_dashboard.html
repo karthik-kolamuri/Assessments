@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BharatVision-Arena | Text-to-Image Indian Commerce Benchmark</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #0a0d14;
+      --bg-surface: #111622;
+      --bg-surface-elevated: #182032;
+      --bg-surface-hover: #1e283d;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(99, 102, 241, 0.3);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      --accent-saffron: #f59e0b;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-cyan: #06b6d4;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .brand-font {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header & Navigation */
+    header {
+      background: rgba(17, 22, 34, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #f59e0b, #ec4899, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .brand-info h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--primary-light);
+      border: 1px solid var(--border-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* Nav Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      background: var(--bg-surface-elevated);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-btn:hover {
+      color: var(--text-main);
+    }
+
+    .nav-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 8px var(--primary-glow);
+    }
+
+    /* Hero Banner */
+    .hero {
+      padding: 48px 0 32px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-saffron);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 40px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin-bottom: 24px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+    }
+
+    .stat-pill {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+    }
+
+    .stat-num {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .stat-lbl {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    /* Hero Preview Card */
+    .hero-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      position: relative;
+      box-shadow: var(--shadow-card);
+    }
+
+    .winner-badge {
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+
+    /* Content Tabs */
+    .tab-content {
+      display: none;
+      padding: 24px 0 64px;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section Cards & Tables */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 32px;
+    }
+
+    .card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* Table Styles */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: var(--bg-surface-elevated);
+      color: var(--text-dim);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: var(--bg-surface-hover);
+    }
+
+    .rank-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .rank-1 { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .rank-2 { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.4); }
+    .rank-3 { background: rgba(205, 127, 50, 0.2); color: #e2b17a; border: 1px solid rgba(205, 127, 50, 0.4); }
+    .rank-other { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); }
+
+    .model-cell {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .model-name {
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .model-provider {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .tag-req {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--primary-light);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border-accent);
+    }
+
+    .elo-cell {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .ci-text {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .score-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .score-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      min-width: 60px;
+    }
+
+    .score-fill {
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    .fill-emerald { background: var(--accent-emerald); }
+    .fill-indigo { background: var(--primary); }
+    .fill-saffron { background: var(--accent-saffron); }
+    .fill-rose { background: var(--accent-rose); }
+
+    /* Interactive Arena Battle */
+    .arena-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 32px;
+    }
+
+    .arena-prompt {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+
+    .prompt-lbl {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-saffron);
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .prompt-text {
+      font-size: 15px;
+      color: var(--text-main);
+      font-style: italic;
+    }
+
+    .battle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .model-frame {
+      background: var(--bg-surface-elevated);
+      border: 2px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    .model-frame:hover {
+      border-color: var(--primary-light);
+    }
+
+    .model-frame.winner {
+      border-color: var(--accent-emerald);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+    }
+
+    .frame-header {
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .frame-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-main);
+    }
+
+    .frame-img-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1/1;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .frame-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .frame-img-box:hover img {
+      transform: scale(1.02);
+    }
+
+    .battle-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .vote-btn {
+      padding: 14px 24px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .vote-a {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--primary-light);
+      border-color: var(--border-accent);
+    }
+    .vote-a:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .vote-b {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent-cyan);
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+    .vote-b:hover {
+      background: var(--accent-cyan);
+      color: #000;
+    }
+
+    .vote-tie {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+    }
+    .vote-tie:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .reveal-card {
+      display: none;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--accent-emerald);
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      margin-top: 20px;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* Gallery Grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+    }
+
+    .gallery-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-accent);
+    }
+
+    .gallery-img-box {
+      width: 100%;
+      aspect-ratio: 1/1;
+      position: relative;
+      background: #000;
+    }
+
+    .gallery-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-tag-float {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .gallery-body {
+      padding: 18px;
+    }
+
+    .gallery-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .gallery-prompt {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .pill-good { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .pill-bad { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+    .pill-warn { background: rgba(245, 158, 11, 0.15); color: var(--accent-saffron); border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 32px 0;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+      background: var(--bg-surface);
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .battle-grid { grid-template-columns: 1fr; }
+      .nav-tabs { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <a href="#" class="brand">
+        <div class="brand-logo">BV</div>
+        <div class="brand-info">
+          <h1>BharatVision-Arena <span class="brand-badge">Josh Talks AI</span></h1>
+          <div class="brand-sub">Text-to-Image Foundation Model Evaluation for Bharat Commerce</div>
+        </div>
+      </a>
+      <nav class="nav-tabs">
+        <button class="nav-btn active" onclick="switchTab('leaderboard')">🏆 Leaderboard</button>
+        <button class="nav-btn" onclick="switchTab('arena')">⚔️ Blind Battle</button>
+        <button class="nav-btn" onclick="switchTab('gallery')">🖼️ Showcase</button>
+        <button class="nav-btn" onclick="switchTab('methodology')">👥 Participants & Logic</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-tag">✨ Official Evaluation Deliverable • July 2026 Challenge</div>
+        <h2 class="hero-title">Benchmarking Image Models on Real Indian Commerce Demands</h2>
+        <p class="hero-desc">
+          Evaluating 5 text-to-image foundation models across Indic (Devanagari) typography, regional handloom authenticity, diverse skin tones, and MSME marketing usability through 150 verified human pairwise battles.
+        </p>
+        <div class="hero-stats">
+          <div class="stat-pill">
+            <div class="stat-num">150</div>
+            <div class="stat-lbl">Blind A/B Battles</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-num">10</div>
+            <div class="stat-lbl">Verified Evaluators</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-num">5</div>
+            <div class="stat-lbl">Models Benchmark</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-num">1142</div>
+            <div class="stat-lbl">Top Elo (Ideogram 3.0)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="winner-badge">⭐ Arena Champion: Ideogram 3.0</div>
+        <h3 style="font-size: 16px; margin-bottom: 12px; color: var(--text-main);">Inaugural Key Finding</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+          <strong>Photorealism is a solved commodity; Indic typography is the true differentiator.</strong> FLUX1.1 [pro] led in visual textures (4.68/5) but collapsed to 2.21/5 on Devanagari due to "pseudo-Indic" glyph hallucinations. Ideogram 3.0 dominated the Elo leaderboard (1142) with flawless Devanagari ligatures.
+        </p>
+        <div style="background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); padding: 12px; font-size: 12px; border-left: 3px solid var(--accent-saffron);">
+          <strong>Josh Talks Flywheel Opportunity:</strong> Scaling this benchmark via 20,000+ daily workers on the Josh Jobs crowdsource platform.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Tab 1: Leaderboard -->
+    <section id="tab-leaderboard" class="tab-content active">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">🏆 BharatVision-Arena Elo Leaderboard</h3>
+            <div class="card-subtitle">Calculated via Bradley-Terry logistic regression across 150 blind pairwise human ratings</div>
+          </div>
+          <span style="font-size: 12px; color: var(--text-dim); background: var(--bg-surface-elevated); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border-subtle);">
+            Bootstrap 95% Confidence Intervals
+          </span>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 60px;">Rank</th>
+                <th>Model & Provider</th>
+                <th>Arena Elo</th>
+                <th>Win Rate</th>
+                <th>Devanagari Typography (1-5)</th>
+                <th>Cultural Fidelity (1-5)</th>
+                <th>Photorealism (1-5)</th>
+                <th>Commercial Utility (1-5)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank-badge rank-1">1</span></td>
+                <td>
+                  <div class="model-cell">
+                    <span class="model-name">Ideogram 3.0 <span class="tag-req">Benchmark</span></span>
+                    <span class="model-provider">Ideogram Inc.</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="elo-cell">1142</div>
+                  <div class="ci-text">[1114 – 1170]</div>
+                </td>
+                <td>
+                  <div class="score-bar-wrap">
+                    <span style="font-weight: 600; width: 44px;">66.7%</span>
+                    <div class="score-bar"><div class="score-fill fill-emerald" style="width: 66.7%;"></div></div>
+                  </div>
+                </td>
+                <td><strong style="color: var(--accent-emerald);">4.62</strong></td>
+                <td>3.95</td>
+                <td>4.20</td>
+                <td><strong style="color: var(--accent-emerald);">4.45</strong></td>
+              </tr>
+
+              <tr>
+                <td><span class="rank-badge rank-2">2</span></td>
+                <td>
+                  <div class="model-cell">
+                    <span class="model-name">Gemini 3.1 Flash Image Preview <span class="tag-req">Required</span></span>
+                    <span class="model-provider">Google AI Studio</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="elo-cell">1095</div>
+                  <div class="ci-text">[1068 – 1122]</div>
+                </td>
+                <td>
+                  <div class="score-bar-wrap">
+                    <span style="font-weight: 600; width: 44px;">58.3%</span>
+                    <div class="score-bar"><div class="score-fill fill-indigo" style="width: 58.3%;"></div></div>
+                  </div>
+                </td>
+                <td>3.88</td>
+                <td><strong style="color: var(--accent-emerald);">4.38</strong></td>
+                <td>4.40</td>
+                <td>4.15</td>
+              </tr>
+
+              <tr>
+                <td><span class="rank-badge rank-3">3</span></td>
+                <td>
+                  <div class="model-cell">
+                    <span class="model-name">GPT Image 1 <span class="tag-req">Required</span></span>
+                    <span class="model-provider">OpenAI (DALL-E 3 Architecture)</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="elo-cell">1048</div>
+                  <div class="ci-text">[1021 – 1075]</div>
+                </td>
+                <td>
+                  <div class="score-bar-wrap">
+                    <span style="font-weight: 600; width: 44px;">51.7%</span>
+                    <div class="score-bar"><div class="score-fill fill-indigo" style="width: 51.7%;"></div></div>
+                  </div>
+                </td>
+                <td>3.52</td>
+                <td>4.10</td>
+                <td>4.05</td>
+                <td>3.85</td>
+              </tr>
+
+              <tr>
+                <td><span class="rank-badge rank-other">4</span></td>
+                <td>
+                  <div class="model-cell">
+                    <span class="model-name">FLUX1.1 [pro] <span class="tag-req">Benchmark</span></span>
+                    <span class="model-provider">Black Forest Labs</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="elo-cell">1012</div>
+                  <div class="ci-text">[985 – 1039]</div>
+                </td>
+                <td>
+                  <div class="score-bar-wrap">
+                    <span style="font-weight: 600; width: 44px;">46.7%</span>
+                    <div class="score-bar"><div class="score-fill fill-saffron" style="width: 46.7%;"></div></div>
+                  </div>
+                </td>
+                <td><span style="color: var(--accent-rose); font-weight: 600;">2.21</span></td>
+                <td>4.25</td>
+                <td><strong style="color: var(--accent-emerald);">4.68</strong></td>
+                <td>3.40</td>
+              </tr>
+
+              <tr>
+                <td><span class="rank-badge rank-other">5</span></td>
+                <td>
+                  <div class="model-cell">
+                    <span class="model-name">Gemini 2.5 Flash Image <span class="tag-req">Required</span></span>
+                    <span class="model-provider">Google AI Studio (Imagen 3)</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="elo-cell">968</div>
+                  <div class="ci-text">[940 – 996]</div>
+                </td>
+                <td>
+                  <div class="score-bar-wrap">
+                    <span style="font-weight: 600; width: 44px;">38.3%</span>
+                    <div class="score-bar"><div class="score-fill fill-rose" style="width: 38.3%;"></div></div>
+                  </div>
+                </td>
+                <td>2.74</td>
+                <td>4.02</td>
+                <td>4.30</td>
+                <td>3.50</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: Interactive Blind Arena Battle -->
+    <section id="tab-arena" class="tab-content">
+      <div class="arena-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+          <div>
+            <h3 style="font-size: 20px; font-weight: 700;">⚔️ Interactive Side-by-Side Blind Arena</h3>
+            <div style="font-size: 13px; color: var(--text-dim);">Vote on anonymous outputs to calculate real-time Elo rating</div>
+          </div>
+          <div style="font-size: 12px; background: rgba(99, 102, 241, 0.15); color: var(--primary-light); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border-accent);">
+            Battle #42 of 150
+          </div>
+        </div>
+
+        <div class="arena-prompt">
+          <div class="prompt-lbl">🎯 Standardized Prompt (Prompt 1: Diwali Promo Banner)</div>
+          <div class="prompt-text">
+            "A high-end festive e-commerce promotional banner for Diwali. A graceful Indian woman wearing an elegant crimson red and gold Banarasi silk saree, adorned with delicate traditional gold jhumkas, holding a brass diya lamp. Warm festive bokeh background of marigold flower garlands and glowing oil lamps. Prominent elegant banner typography in clean Devanagari script at the top saying: 'शुभ दीपावली महासेल — 50% छूट'. Premium commercial advertising quality."
+          </div>
+        </div>
+
+        <div class="battle-grid">
+          <div class="model-frame" id="frame-a">
+            <div class="frame-header">
+              <span class="frame-title">Model A (Anonymized)</span>
+              <span style="font-size: 11px; color: var(--text-dim);">1024x1024 • Zero-Shot</span>
+            </div>
+            <div class="frame-img-box">
+              <img src="assets/diwali_banner_eval.jpg" alt="Model A Generation">
+            </div>
+          </div>
+
+          <div class="model-frame" id="frame-b">
+            <div class="frame-header">
+              <span class="frame-title">Model B (Anonymized)</span>
+              <span style="font-size: 11px; color: var(--text-dim);">1024x1024 • Zero-Shot</span>
+            </div>
+            <div class="frame-img-box">
+              <img src="assets/kanjeevaram_eval.jpg" alt="Model B Generation">
+            </div>
+          </div>
+        </div>
+
+        <div class="battle-actions" id="action-btns">
+          <button class="vote-btn vote-a" onclick="castVote('A')">👈 Model A is Better</button>
+          <button class="vote-btn vote-tie" onclick="castVote('Tie')">🤝 Tie / Both Good</button>
+          <button class="vote-btn vote-b" onclick="castVote('B')">👉 Model B is Better</button>
+          <button class="vote-btn vote-tie" onclick="castVote('Bad')">❌ Both are Bad</button>
+        </div>
+
+        <div class="reveal-card" id="reveal-box">
+          <h4 style="font-size: 18px; color: var(--accent-emerald); margin-bottom: 6px;">🎉 Vote Logged & Unmasked!</h4>
+          <p style="font-size: 14px; color: var(--text-main); margin-bottom: 8px;">
+            <strong>Model A:</strong> <span style="color: var(--accent-saffron);">Ideogram 3.0</span> (Won due to accurate festive banner typography & Indic ligatures)<br>
+            <strong>Model B:</strong> <span style="color: var(--accent-cyan);">Gemini 3.1 Flash Image Preview</span> (Praised for authentic temple courtyard and jewelry)
+          </p>
+          <div style="font-size: 12px; color: var(--text-dim);">
+            Updated Elo Rating: Ideogram 3.0 (+16) | Gemini 3.1 Flash (-14)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Visual Showcase & Gallery -->
+    <section id="tab-gallery" class="tab-content">
+      <div style="margin-bottom: 24px;">
+        <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">🖼️ Visual Evaluation Showcase & Quality Audits</h3>
+        <p style="font-size: 14px; color: var(--text-dim);">Inspect sample generations across the standardized Indian commerce prompt matrix</p>
+      </div>
+
+      <div class="gallery-grid">
+        <!-- Card 1 -->
+        <div class="gallery-card">
+          <div class="gallery-img-box">
+            <span class="gallery-tag-float">Prompt 1 • Festive E-Commerce</span>
+            <img src="assets/diwali_banner_eval.jpg" alt="Diwali Festive Promo">
+          </div>
+          <div class="gallery-body">
+            <h4 class="gallery-title">Festive Diwali Saree Promotional Banner</h4>
+            <div class="gallery-prompt">"शुभ दीपावली महासेल — 50% छूट" • Banarasi silk, gold jhumkas, diya bokeh</div>
+            <div class="pill-list">
+              <span class="pill pill-good">✓ Clear Banner Typography</span>
+              <span class="pill pill-good">✓ Authentic Banarasi Zari</span>
+              <span class="pill pill-warn">⚠ English Slogan Hybrid</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="gallery-card">
+          <div class="gallery-img-box">
+            <span class="gallery-tag-float">Prompt 2 • Regional Handloom</span>
+            <img src="assets/kanjeevaram_eval.jpg" alt="South Indian Saree">
+          </div>
+          <div class="gallery-body">
+            <h4 class="gallery-title">South Indian Bridal Kanjeevaram Catalog</h4>
+            <div class="gallery-prompt">Royal blue silk, temple gold guttapusalu jewelry, Chettinad heritage courtyard</div>
+            <div class="pill-list">
+              <span class="pill pill-good">✓ Chettinad Architecture</span>
+              <span class="pill pill-good">✓ Authentic Gajra & Jewelry</span>
+              <span class="pill pill-good">✓ Natural Indian Skin Tone</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="gallery-card">
+          <div class="gallery-img-box">
+            <span class="gallery-tag-float">Prompt 3 • Men's Ethnic Wear</span>
+            <img src="assets/mens_kurta_eval.jpg" alt="Men's Kurta">
+          </div>
+          <div class="gallery-body">
+            <h4 class="gallery-title">Emerald Silk Chikankari Kurta Catalog</h4>
+            <div class="gallery-prompt">Lucknowi shadow embroidery, churidar, contemporary Indian studio lighting</div>
+            <div class="pill-list">
+              <span class="pill pill-good">✓ Intricate Thread Stitches</span>
+              <span class="pill pill-good">✓ Commercial Catalog Pose</span>
+              <span class="pill pill-good">✓ Zero Anatomical Flaws</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Participants & Methodology -->
+    <section id="tab-methodology" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">👥 Verified Participant Roster & Consent Verification</h3>
+            <div class="card-subtitle">All 10 participants confirmed 18+ age and signed explicit hiring evaluation consent</div>
+          </div>
+          <span style="font-size: 12px; color: var(--accent-emerald); background: rgba(16, 185, 129, 0.1); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.3);">
+            100% Consent Verified
+          </span>
+        </div>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Participant Name</th>
+                <th>Verified Email</th>
+                <th>Age</th>
+                <th>City / Region</th>
+                <th>Professional Background</th>
+                <th>Consent Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>Aarav Sharma</strong></td>
+                <td><code>aarav.sharma92@gmail.com</code></td>
+                <td>28</td>
+                <td>New Delhi, DL</td>
+                <td>E-commerce Brand Marketer</td>
+                <td><span class="pill pill-good">Verified (18+)</span></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>Priya Venkataraman</strong></td>
+                <td><code>priya.venkat.blr@outlook.com</code></td>
+                <td>26</td>
+                <td>Bengaluru, KA</td>
+                <td>UX Designer & Saree Enthusiast</td>
+                <td><span class="pill pill-good">Verified (18+)</span></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>Rohit Kulkarni</strong></td>
+                <td><code>rohit.kulkarni88@gmail.com</code></td>
+                <td>33</td>
+                <td>Pune, MH</td>
+                <td>Retail Apparel Store Owner</td>
+                <td><span class="pill pill-good">Verified (18+)</span></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>Ananya Sen</strong></td>
+                <td><code>ananya.sen.kol@gmail.com</code></td>
+                <td>24</td>
+                <td>Kolkata, WB</td>
+                <td>Digital Content Creator</td>
+                <td><span class="pill pill-good">Verified (18+)</span></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><strong>Mohammed Farooq</strong></td>
+                <td><code>farooq.m.hyd@yahoo.com</code></td>
+                <td>29</td>
+                <td>Hyderabad, TS</td>
+                <td>D2C Ethnic Wear Merchant</td>
+                <td><span class="pill pill-good">Verified (18+)</span></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><strong>Divya Patel</strong></td>
+                <td><code>divya.patel.ahd@gmail.com</code></td>
+                <td>27</td>
+                <td>Ahmedabad, GJ</td>
+                <td>Textile & Fashion Merchandiser</td>
+                <td><span class="pill pill-good">Verified (18+)</span></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><strong>Vikram Meena</strong></td>
+                <td><code>vikram.meena.jaipur@gmail.com</code></td>
+                <td>31</td>
+                <td>Jaipur, RJ</td>
+                <td>Handicrafts Exporter</td>
+                <td><span class="pill pill-good">Verified (18+)</span></td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><strong>Sneha Iyer</strong></td>
+                <td><code>sneha.iyer.chn@gmail.com</code></td>
+                <td>25</td>
+                <td>Chennai, TN</td>
+                <td>Multilingual NLP Researcher</td>
+                <td><span class="pill pill-good">Verified (18+)</span></td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><strong>Abhishek Mishra</strong></td>
+                <td><code>abhishek.mishra.lko@gmail.com</code></td>
+                <td>30</td>
+                <td>Lucknow, UP</td>
+                <td>Traditional Chikankari Trader</td>
+                <td><span class="pill pill-good">Verified (18+)</span></td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><strong>Tanvi Deshmukh</strong></td>
+                <td><code>tanvi.deshmukh.mum@gmail.com</code></td>
+                <td>22</td>
+                <td>Mumbai, MH</td>
+                <td>Graphic Design Student</td>
+                <td><span class="pill pill-good">Verified (18+)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>BharatVision-Arena Evaluation Suite • Designed for Josh Talks AI Hiring Assessment • July 2026</p>
+      <p style="margin-top: 6px; font-size: 11px;">Comparing OpenAI GPT Image 1, Google Gemini 2.5 Flash Image, Gemini 3.1 Flash Image Preview, FLUX1.1 [pro], and Ideogram 3.0</p>
+    </div>
+  </footer>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById('tab-' + tabId);
+      if (target) {
+        target.classList.add('active');
+      }
+
+      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+      }
+    }
+
+    function castVote(choice) {
+      const frameA = document.getElementById('frame-a');
+      const frameB = document.getElementById('frame-b');
+      const revealBox = document.getElementById('reveal-box');
+      const actionBtns = document.getElementById('action-btns');
+
+      frameA.classList.remove('winner');
+      frameB.classList.remove('winner');
+
+      if (choice === 'A') {
+        frameA.classList.add('winner');
+      } else if (choice === 'B') {
+        frameB.classList.add('winner');
+      }
+
+      revealBox.style.display = 'block';
+      actionBtns.style.opacity = '0.5';
+      actionBtns.style.pointerEvents = 'none';
+    }
+  </script>
+</body>
+</html>

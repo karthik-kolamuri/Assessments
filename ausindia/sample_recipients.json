@@ -1,0 +1,47 @@
+{
+  "event_name": "Full Stack Cloud & Generative AI Bootcamp 2026",
+  "issuer_name": "AusIndia Education Initiative",
+  "issue_date": "October 09, 2026",
+  "recipients": [
+    {
+      "name": "Aarav Sharma",
+      "email": "aarav.sharma@example.com"
+    },
+    {
+      "name": "Priya Venkataraman",
+      "email": "priya.venkat@example.com"
+    },
+    {
+      "name": "Rohit Kulkarni",
+      "email": "rohit.kulkarni@example.com"
+    },
+    {
+      "name": "Ananya Sen",
+      "email": "ananya.sen@example.com"
+    },
+    {
+      "name": "Mohammed Farooq",
+      "email": "farooq.m@example.com"
+    },
+    {
+      "name": "Divya Patel",
+      "email": "divya.patel@example.com"
+    },
+    {
+      "name": "Vikram Meena",
+      "email": "vikram.meena@example.com"
+    },
+    {
+      "name": "Sneha Iyer",
+      "email": "sneha.iyer@example.com"
+    },
+    {
+      "name": "Abhishek Mishra",
+      "email": "abhishek.m@example.com"
+    },
+    {
+      "name": "Tanvi Deshmukh",
+      "email": "tanvi.d@example.com"
+    }
+  ]
+}

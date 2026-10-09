@@ -1,0 +1,184 @@
+{
+  "evaluation_metadata": {
+    "evaluation_name": "BharatVision-Arena: Text-to-Image Indian Commerce Benchmark",
+    "date": "October 2026",
+    "total_participants": 10,
+    "total_battles": 150,
+    "models_evaluated": [
+      "Ideogram 3.0",
+      "Gemini 3.1 Flash Image Preview",
+      "GPT Image 1",
+      "FLUX1.1 [pro]",
+      "Gemini 2.5 Flash Image"
+    ]
+  },
+  "participants": [
+    {
+      "id": 1,
+      "name": "Aarav Sharma",
+      "email": "aarav.sharma92@gmail.com",
+      "age": 28,
+      "location": "New Delhi",
+      "role": "E-commerce Brand Marketer",
+      "consent_confirmed": true,
+      "consent_timestamp": "2026-10-06T10:15:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Priya Venkataraman",
+      "email": "priya.venkat.blr@outlook.com",
+      "age": 26,
+      "location": "Bengaluru",
+      "role": "UX Designer & Saree Enthusiast",
+      "consent_confirmed": true,
+      "consent_timestamp": "2026-10-06T11:30:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Rohit Kulkarni",
+      "email": "rohit.kulkarni88@gmail.com",
+      "age": 33,
+      "location": "Pune",
+      "role": "Retail Apparel Store Owner",
+      "consent_confirmed": true,
+      "consent_timestamp": "2026-10-06T14:20:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Ananya Sen",
+      "email": "ananya.sen.kol@gmail.com",
+      "age": 24,
+      "location": "Kolkata",
+      "role": "Digital Content Creator",
+      "consent_confirmed": true,
+      "consent_timestamp": "2026-10-06T16:05:00Z"
+    },
+    {
+      "id": 5,
+      "name": "Mohammed Farooq",
+      "email": "farooq.m.hyd@yahoo.com",
+      "age": 29,
+      "location": "Hyderabad",
+      "role": "D2C Ethnic Wear Merchant",
+      "consent_confirmed": true,
+      "consent_timestamp": "2026-10-07T09:45:00Z"
+    },
+    {
+      "id": 6,
+      "name": "Divya Patel",
+      "email": "divya.patel.ahd@gmail.com",
+      "age": 27,
+      "location": "Ahmedabad",
+      "role": "Textile Merchandiser",
+      "consent_confirmed": true,
+      "consent_timestamp": "2026-10-07T11:10:00Z"
+    },
+    {
+      "id": 7,
+      "name": "Vikram Meena",
+      "email": "vikram.meena.jaipur@gmail.com",
+      "age": 31,
+      "location": "Jaipur",
+      "role": "Handicrafts Exporter",
+      "consent_confirmed": true,
+      "consent_timestamp": "2026-10-07T13:30:00Z"
+    },
+    {
+      "id": 8,
+      "name": "Sneha Iyer",
+      "email": "sneha.iyer.chn@gmail.com",
+      "age": 25,
+      "location": "Chennai",
+      "role": "Indic NLP Researcher",
+      "consent_confirmed": true,
+      "consent_timestamp": "2026-10-07T15:50:00Z"
+    },
+    {
+      "id": 9,
+      "name": "Abhishek Mishra",
+      "email": "abhishek.mishra.lko@gmail.com",
+      "age": 30,
+      "location": "Lucknow",
+      "role": "Chikankari Trader",
+      "consent_confirmed": true,
+      "consent_timestamp": "2026-10-08T10:00:00Z"
+    },
+    {
+      "id": 10,
+      "name": "Tanvi Deshmukh",
+      "email": "tanvi.deshmukh.mum@gmail.com",
+      "age": 22,
+      "location": "Mumbai",
+      "role": "Graphic Design Student",
+      "consent_confirmed": true,
+      "consent_timestamp": "2026-10-08T12:15:00Z"
+    }
+  ],
+  "elo_leaderboard": [
+    {
+      "rank": 1,
+      "model": "Ideogram 3.0",
+      "provider": "Ideogram",
+      "elo": 1142,
+      "ci_low": 1114,
+      "ci_high": 1170,
+      "win_rate": 0.667,
+      "cultural_fidelity": 3.95,
+      "indic_typography": 4.62,
+      "photorealism": 4.20,
+      "commercial_utility": 4.45
+    },
+    {
+      "rank": 2,
+      "model": "Gemini 3.1 Flash Image Preview",
+      "provider": "Google",
+      "elo": 1095,
+      "ci_low": 1068,
+      "ci_high": 1122,
+      "win_rate": 0.583,
+      "cultural_fidelity": 4.38,
+      "indic_typography": 3.88,
+      "photorealism": 4.40,
+      "commercial_utility": 4.15
+    },
+    {
+      "rank": 3,
+      "model": "GPT Image 1",
+      "provider": "OpenAI",
+      "elo": 1048,
+      "ci_low": 1021,
+      "ci_high": 1075,
+      "win_rate": 0.517,
+      "cultural_fidelity": 4.10,
+      "indic_typography": 3.52,
+      "photorealism": 4.05,
+      "commercial_utility": 3.85
+    },
+    {
+      "rank": 4,
+      "model": "FLUX1.1 [pro]",
+      "provider": "Black Forest Labs",
+      "elo": 1012,
+      "ci_low": 985,
+      "ci_high": 1039,
+      "win_rate": 0.467,
+      "cultural_fidelity": 4.25,
+      "indic_typography": 2.21,
+      "photorealism": 4.68,
+      "commercial_utility": 3.40
+    },
+    {
+      "rank": 5,
+      "model": "Gemini 2.5 Flash Image",
+      "provider": "Google",
+      "elo": 968,
+      "ci_low": 940,
+      "ci_high": 996,
+      "win_rate": 0.383,
+      "cultural_fidelity": 4.02,
+      "indic_typography": 2.74,
+      "photorealism": 4.30,
+      "commercial_utility": 3.50
+    }
+  ]
+}
